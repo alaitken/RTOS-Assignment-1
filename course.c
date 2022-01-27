@@ -43,7 +43,6 @@ void		course_hold(struct course* course) {
 /** Decrement a course's refcount (optionally freeing it). */
 void		course_release(struct course* course) {
     course->ref_count--;
-    free(course);
 }
 
 /** Retrieve the current reference count of a course. */
