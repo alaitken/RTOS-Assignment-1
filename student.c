@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "student.h"
 #include "course.h"
-#define MAX_COURSE_LOAD 6
+#define MAX_COURSE_LOAD 999999
 
 /* Forward declaration of course type. */
 struct course;
