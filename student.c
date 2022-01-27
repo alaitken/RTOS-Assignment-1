@@ -22,7 +22,8 @@ struct student {
     struct student_id   student_id;
     bool                is_graduate;
     struct grade*       grades[MAX_COURSE_LOAD];
-    int                 coursesTaken;     
+    int                 numOfCourses;
+    struct course*      courses[];   
 };
 
 /**
@@ -36,7 +37,7 @@ struct student*	student_create(struct student_id student_id, bool grad_student) 
 
     p->student_id = student_id;
     p->is_graduate = grad_student;
-    p->coursesTaken = 0;
+    p->numOfCourses = 0;
 
     return p;
 }
@@ -45,6 +46,9 @@ struct student*	student_create(struct student_id student_id, bool grad_student) 
  * Release a student object.
  */
 void student_free(struct student* student) {
+    for (int i = 0; i < student->numOfCourses; i++) {
+        course_release(student->courses[i]);
+    }
     free(student);
 }
 
@@ -61,12 +65,12 @@ void student_take(struct student *student, struct course* course, uint8_t grade)
     g->course = course;
     g->grade = grade;
 
-    int coursesTaken = student->coursesTaken;
+    int numOfCourses = student->numOfCourses;
 
-    if (coursesTaken >= MAX_COURSE_LOAD) return;
+    if (numOfCourses >= MAX_COURSE_LOAD) return;
     
-    student->grades[coursesTaken] = g;
-    student->coursesTaken = coursesTaken + 1;
+    student->grades[numOfCourses] = g;
+    student->numOfCourses = numOfCourses + 1;
 
     course_hold(course);
 }
@@ -80,7 +84,7 @@ void student_take(struct student *student, struct course* course, uint8_t grade)
  * @returns    a grade, or -1 if the student has not taken the course
  */
 int student_grade(struct student* student, struct course* course) {
-    for (int i = 0; i < student->coursesTaken; i++) {
+    for (int i = 0; i < student->numOfCourses; i++) {
         if (course_code(student->grades[i]->course) == course_code(course)) 
             return student->grades[i]->grade;
     }
@@ -100,7 +104,7 @@ double student_passed_average(const struct student* student) {
     int sumGrades = 0;
     int passedCourses = 0;
 
-    for (int i = 0; i < student->coursesTaken; i++) {
+    for (int i = 0; i < student->numOfCourses; i++) {
         if ((student->is_graduate && student->grades[i]->grade >= 65) || 
             (!(student->is_graduate) && student->grades[i]->grade >= 50)) {
             sumGrades += student->grades[i]->grade;
@@ -131,7 +135,7 @@ bool student_promotable(const struct student* student) {
         printf("\nIs a graduate");
         int fails = 0;
 
-        for (int i = 0; i < student->coursesTaken; i++) {
+        for (int i = 0; i < student->numOfCourses; i++) {
 
             if (student->grades[i]->grade < 50) {
                 fails++;
@@ -141,11 +145,11 @@ bool student_promotable(const struct student* student) {
         }
     } else {
         int sumGrade = 0;
-        for (int i = 0; i < student->coursesTaken; i++) {
+        for (int i = 0; i < student->numOfCourses; i++) {
             sumGrade += student->grades[i]->grade;
         }
-        printf("\nCourse Average: %d", sumGrade/student->coursesTaken);
-        if (sumGrade/student->coursesTaken < 60) return false;
+        printf("\nCourse Average: %d", sumGrade/student->numOfCourses);
+        if (sumGrade/student->numOfCourses < 60) return false;
     }
 
     return true;
