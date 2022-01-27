@@ -23,7 +23,6 @@ struct student {
     bool                is_graduate;
     struct grade*       grades[MAX_COURSE_LOAD];
     int                 numOfCourses;
-    struct course*      courses[];   
 };
 
 /**
@@ -47,7 +46,7 @@ struct student*	student_create(struct student_id student_id, bool grad_student) 
  */
 void student_free(struct student* student) {
     for (int i = 0; i < student->numOfCourses; i++) {
-        course_release(student->courses[i]);
+        course_release(student->grades[i]->course);
     }
     free(student);
 }
