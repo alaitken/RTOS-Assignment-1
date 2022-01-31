@@ -107,7 +107,7 @@ void test_student() {
 
     //printf("\nSize of grades array: %d numOfCourses: %d", numOfCourses, amber->numOfCourses);
 
-    printf("\nGrade is %d", student_grade(amber, engl));
+    printf("\nGrade is %d", student_grade(amber, chem));
 
     // int x = 0;
     // while (x < amber->numOfCourses) {
