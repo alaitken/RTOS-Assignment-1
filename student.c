@@ -98,7 +98,7 @@ void student_take(struct student *student, struct course* course, uint8_t grade)
 int student_grade(struct student* student, struct course* course) {
     printf("\nChecking if student is taking course");
     for (int i = 0; i < student->numOfCourses; i++) {
-        if (student->grades[i]->course->subject == course->subject) {
+        if (course_code(student->grades[i]->course) == course_code(course)) {
             printf("\nStudent: %u-%u is taking course: %u Grade: %f", student->student_id.sid_year,student->student_id.sid_serial, course_code(course), student->grades[i]->grade);
             return student->grades[i]->grade;
         }
