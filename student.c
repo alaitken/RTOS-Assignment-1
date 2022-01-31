@@ -71,7 +71,7 @@ void student_take(struct student *student, struct course* course, uint8_t grade)
     g->course = course;
     g->grade = grade;
     
-    student->grades[0] = g;
+    student->grades[student->numOfCourses] = g;
     student->numOfCourses = student->numOfCourses + 1;
     printf("\nNum of courses: %d", student->numOfCourses);
 
@@ -87,9 +87,12 @@ void student_take(struct student *student, struct course* course, uint8_t grade)
  * @returns    a grade, or -1 if the student has not taken the course
  */
 int student_grade(struct student* student, struct course* course) {
-    for (int i = 0; i < student->numOfCourses; i++) {
-        if (course_code(student->grades[i]->course) == course_code(course)) 
+    printf("\nChecking if student is taking course");
+    for (int i = 0; i < student->numOfCourses; ++i) {
+        if (student->grades[i]->course->subject == course->subject) {
+            printf("Student is taking course!");
             return student->grades[i]->grade;
+        }
     }
     return -1;
 }

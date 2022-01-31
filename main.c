@@ -100,11 +100,13 @@ void test_student() {
     student_take(amber, engl, 10);
     //printf("\nAmber grades recorded!");
 
-    printf("Amber's grade in %u is %f", amber->grades[0]->course->subject, amber->grades[0]->grade);
+    printf("\nAmber's grade in %u is %f", amber->grades[0]->course->subject, amber->grades[0]->grade);
 
-    int numOfCourses = sizeof(amber->grades)/sizeof(amber->grades[0]);
+    //int numOfCourses = sizeof(amber->grades)/sizeof(amber->grades[0]);
 
-    printf("Size of grades array: %d numOfCourses: %d", numOfCourses, amber->numOfCourses);
+    //printf("\nSize of grades array: %d numOfCourses: %d", numOfCourses, amber->numOfCourses);
+
+    printf("\nGrade is %d", student_grade(amber, engi));
 
     // int x = 0;
     // while (x < amber->numOfCourses) {
