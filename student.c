@@ -83,9 +83,8 @@ void student_take(struct student *student, struct course* course, uint8_t grade)
         student->grades[student->numOfCourses] = g;
         student->numOfCourses = student->numOfCourses + 1;
         printf("\nNum of courses: %d", student->numOfCourses);
+        course_hold(course);
     }
-
-    course_hold(course);
 }
 
 /**
