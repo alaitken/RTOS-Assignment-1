@@ -65,11 +65,11 @@ void student_free(struct student* student) {
 void student_take(struct student *student, struct course* course, uint8_t grade) {
     if (student->numOfCourses > MAX_COURSE_LOAD) return;
 
-    printf("\n Student: %u-%u took: %u grade: %u", student->student_id.sid_year, student->student_id.sid_serial, course->subject, grade);
+    printf("\n Student: %u-%u took: %u grade: %u", student->student_id.sid_year, student->student_id.sid_serial, course_code(course), grade);
     bool isRepeat = false;
     
     for (int i = 0; i < student->numOfCourses; i++) {
-       if (student->grades[i]->course->subject == course->subject) {
+       if (course_code(student->grades[i]->course) == course_code(course)) {
            printf("\nAlready taken subject! Updating!");
            student->grades[i]->grade = grade;
            isRepeat = true;
