@@ -165,7 +165,7 @@ bool student_promotable(const struct student* student) {
         for (int i = 0; i < student->numOfCourses; i++) {
             sumGrade = sumGrade + student->grades[i]->grade;
         }
-        printf("\nCourse Average: %d", sumGrade/student->numOfCourses);
+        printf("\nCourse Average: %d NumOfCOurse: %d Avg: %d", sumGrade, student->numOfCourses, sumGrade/student->numOfCourses);
         if (sumGrade/student->numOfCourses < 60) return false;
     }
 
