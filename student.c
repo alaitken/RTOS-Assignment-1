@@ -40,7 +40,7 @@ struct student*	student_create(struct student_id student_id, bool grad_student) 
 
     student->student_id = student_id;
     student->is_graduate = grad_student;
-    // student->numOfCourses = 0;
+    student->numOfCourses = 0;
 
     return student;
 }
