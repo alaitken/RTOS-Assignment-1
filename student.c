@@ -88,7 +88,7 @@ void student_take(struct student *student, struct course* course, uint8_t grade)
  */
 int student_grade(struct student* student, struct course* course) {
     int numOfCourses = sizeof(student->grades)/sizeof(student->grades[0]);
-    for (int i = 0; i < numOfCourses; i = i + 1) {
+    for (int i = 0; i < numOfCourses; i++) {
         if (course_code(student->grades[i]->course) == course_code(course)) 
             return student->grades[i]->grade;
     }
@@ -110,11 +110,11 @@ double student_passed_average(const struct student* student) {
 
     int numOfCourses = sizeof(student->grades)/sizeof(student->grades[0]);
 
-    for (int i = 0; i < numOfCourses; i = i + 1) {
+    for (int i = 0; i < numOfCourses; i++) {
         if ((student->is_graduate && student->grades[i]->grade >= 65) || 
             (!(student->is_graduate) && student->grades[i]->grade >= 50)) {
-            sumGrades = sumGrades + student->grades[i]->grade;
-            passedCourses = passedCourses + 1;
+            sumGrades += student->grades[i]->grade;
+            passedCourses++;
         }
     }
 
@@ -141,9 +141,10 @@ bool student_promotable(const struct student* student) {
         printf("\nIs a graduate");
         int fails = 0;
 
-        for (int i = 0; i < student->numOfCourses; i = i + 1) {
+        for (int i = 0; i < student->numOfCourses; i++) {
+
             if (student->grades[i]->grade < 50) {
-                fails = fails + 1;
+                fails++;
                 printf("\nFailed course! Total failures: %d", fails);
                 if (fails > 1) return false;
             }
@@ -151,7 +152,7 @@ bool student_promotable(const struct student* student) {
     } else {
         int sumGrade = 0;
         for (int i = 0; i < student->numOfCourses; i++) {
-            sumGrade = sumGrade + student->grades[i]->grade;
+            sumGrade += student->grades[i]->grade;
         }
         printf("\nCourse Average: %d", sumGrade/student->numOfCourses);
         if (sumGrade/student->numOfCourses < 60) return false;
