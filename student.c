@@ -87,8 +87,7 @@ void student_take(struct student *student, struct course* course, uint8_t grade)
  * @returns    a grade, or -1 if the student has not taken the course
  */
 int student_grade(struct student* student, struct course* course) {
-    int numOfCourses = sizeof(student->grades)/sizeof(student->grades[0]);
-    for (int i = 0; i < numOfCourses; i++) {
+    for (int i = 0; i < student->numOfCourses; i++) {
         if (course_code(student->grades[i]->course) == course_code(course)) 
             return student->grades[i]->grade;
     }
