@@ -1,13 +1,24 @@
 #include <stdio.h>
 #include "student.h"
 #include "course.h"
-#define MAX_COURSE_LOAD 6
+#define MAX_COURSE_LOAD 15
+
+struct course {
+    int         ref_count;
+    enum subject     subject;
+    uint16_t    code;
+};
 
 struct student {
     struct student_id   student_id;
     bool                is_graduate;
     struct grade*       grades[MAX_COURSE_LOAD];
-    int                 coursesTaken;     
+    int                 numOfCourses;     
+};
+
+struct grade {
+    struct course*  course;
+    float          grade;
 };
 
 void test_student();
@@ -35,6 +46,11 @@ void test_student() {
     struct course* ece = course_create(SUBJ_ECE, 3);
     struct course* math = course_create(SUBJ_MATH, 4);
     struct course* phys = course_create(SUBJ_PHYS, 5);
+    struct course* mech = course_create(SUBJ_MECH, 6);
+    struct course* onae = course_create(SUBJ_ONAE, 7);
+    struct course* proc = course_create(SUBJ_PROC, 8);
+    struct course* chem = course_create(SUBJ_CHEM, 9);
+    struct course* engl = course_create(SUBJ_ENGL, 10);
     printf("\nCourse created");
 
     printf("\nCreating Amber's ID");
@@ -49,7 +65,7 @@ void test_student() {
     struct student* amber = student_create(amberId, true);
     printf("\nStudent Amber created");
 
-    printf("\nCourses taken: %d", amber->coursesTaken);
+    printf("\nCourses taken: %d", amber->numOfCourses);
 
     printf("\nIs Amber a graduate: %s", amber->is_graduate ? "true" : "false");
 
@@ -71,13 +87,31 @@ void test_student() {
 
     // printf("Testing students taking a course");
 
-    printf("\nRecord Amber taking Engi with a 12%% grade");
-    student_take(amber, engi, 40);
-    student_take(amber, civ, 45);
-    student_take(amber, ece, 59);
-    student_take(amber, math, 60);
-    student_take(amber, phys, 62);
-    printf("\nAmber recorded!");
+    printf("\nRecord Amber taking 10 courses!");
+    student_take(amber, engi, 1);
+    student_take(amber, civ, 2);
+    student_take(amber, ece, 3);
+    student_take(amber, math, 4);
+    student_take(amber, phys, 5);
+    student_take(amber, mech, 6);
+    student_take(amber, onae, 7);
+    student_take(amber, proc, 8);
+    student_take(amber, chem, 9);
+    student_take(amber, engl, 10);
+    //printf("\nAmber grades recorded!");
+
+    printf("Amber's grade in %u is %f", amber->grades[0]->course->subject, amber->grades[0]->grade);
+
+    int numOfCourses = sizeof(amber->grades)/sizeof(amber->grades[0]);
+
+    printf("Size of grades array: %d numOfCourses: %d", numOfCourses, amber->numOfCourses);
+
+    // int x = 0;
+    // while (x < amber->numOfCourses) {
+    //     printf("Trying...");
+    //     printf("Amber's grade in %u is %f", amber->grades[x]->course->subject, amber->grades[x]->grade);
+    //     x = x + 1;
+    // }
 
     // printf("Record Ashley taking Engi with a 80%% grade");
     // student_take(ashley, engi, 80);
@@ -89,13 +123,13 @@ void test_student() {
 
     // printf("Testing getting student course grade");
 
-    printf("\nAmber's grade in Engi is: %d", student_grade(amber, engi));
+    // printf("\nAmber's grade in Engi is: %d", student_grade(amber, engi));
     // printf("Ashley's grade in Engi is: %d", student_grade(ashley, engi));
     // printf("Preston's grade in Engi is: %d", student_grade(preston, engi));
 
     // printf("Testing if student is promotable");
 
-    printf("\nIs Amber promotable: %s", student_promotable(amber) ? "true" : "false");
+    // printf("\nIs Amber promotable: %s", student_promotable(amber) ? "true" : "false");
     // printf("Is Ashley promotable: %s", student_promotable(ashley) ? "true" : "false");
     // printf("Is Preston promotable: %s", student_promotable(preston) ? "true" : "false");
 }

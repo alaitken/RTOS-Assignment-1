@@ -4,14 +4,18 @@
 #include <stdint.h>
 #include "student.h"
 #include "course.h"
-#define MAX_COURSE_LOAD 999999
+#define MAX_COURSE_LOAD 15
 
 /* Forward declaration of course type. */
-struct course;
+struct course {
+    int         ref_count;
+    enum subject     subject;
+    uint16_t    code;
+};
 
 struct grade {
     struct course*  course;
-    double          grade;
+    float           grade;
 };
 
 /** A student ID is composed of an application year and a serial number. */
@@ -32,19 +36,20 @@ struct student {
  */
 struct student*	student_create(struct student_id student_id, bool grad_student) {
 
-    struct student* p = malloc(sizeof(struct student));
+    struct student* student = malloc(sizeof(struct student));
 
-    p->student_id = student_id;
-    p->is_graduate = grad_student;
-    p->numOfCourses = 0;
+    student->student_id = student_id;
+    student->is_graduate = grad_student;
+    // student->numOfCourses = 0;
 
-    return p;
+    return student;
 }
 
 /**
  * Release a student object.
  */
 void student_free(struct student* student) {
+    int numOfCourses = sizeof(student->grades)/sizeof(student->grades[0]);
     for (int i = 0; i < student->numOfCourses; i++) {
         course_release(student->grades[i]->course);
     }
@@ -58,18 +63,17 @@ void student_free(struct student* student) {
  * the course that is passed in.
  */
 void student_take(struct student *student, struct course* course, uint8_t grade) {
+    if (student->numOfCourses > MAX_COURSE_LOAD) return;
 
+    printf("\nStudent: %u is now taking %u", student->student_id.sid_serial, course->subject);
     struct grade* g = malloc(sizeof(struct grade));
 
     g->course = course;
     g->grade = grade;
-
-    int numOfCourses = student->numOfCourses;
-
-    if (numOfCourses >= MAX_COURSE_LOAD) return;
     
-    student->grades[numOfCourses] = g;
-    student->numOfCourses = numOfCourses + 1;
+    student->grades[0] = g;
+    student->numOfCourses = student->numOfCourses + 1;
+    printf("\nNum of courses: %d", student->numOfCourses);
 
     course_hold(course);
 }
@@ -83,7 +87,8 @@ void student_take(struct student *student, struct course* course, uint8_t grade)
  * @returns    a grade, or -1 if the student has not taken the course
  */
 int student_grade(struct student* student, struct course* course) {
-    for (int i = 0; i < student->numOfCourses; i++) {
+    int numOfCourses = sizeof(student->grades)/sizeof(student->grades[0]);
+    for (int i = 0; i < numOfCourses; i++) {
         if (course_code(student->grades[i]->course) == course_code(course)) 
             return student->grades[i]->grade;
     }
@@ -103,7 +108,9 @@ double student_passed_average(const struct student* student) {
     int sumGrades = 0;
     int passedCourses = 0;
 
-    for (int i = 0; i < student->numOfCourses; i++) {
+    int numOfCourses = sizeof(student->grades)/sizeof(student->grades[0]);
+
+    for (int i = 0; i < numOfCourses; i++) {
         if ((student->is_graduate && student->grades[i]->grade >= 65) || 
             (!(student->is_graduate) && student->grades[i]->grade >= 50)) {
             sumGrades += student->grades[i]->grade;
