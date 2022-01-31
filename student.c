@@ -110,11 +110,11 @@ double student_passed_average(const struct student* student) {
 
     int numOfCourses = sizeof(student->grades)/sizeof(student->grades[0]);
 
-    for (int i = 0; i < numOfCourses; i++) {
+    for (int i = 0; i < numOfCourses; i = i + 1) {
         if ((student->is_graduate && student->grades[i]->grade >= 65) || 
             (!(student->is_graduate) && student->grades[i]->grade >= 50)) {
-            sumGrades += student->grades[i]->grade;
-            passedCourses++;
+            sumGrades = sumGrades + student->grades[i]->grade;
+            passedCourses = passedCourses + 1;
         }
     }
 
@@ -141,10 +141,9 @@ bool student_promotable(const struct student* student) {
         printf("\nIs a graduate");
         int fails = 0;
 
-        for (int i = 0; i < student->numOfCourses; i++) {
-
+        for (int i = 0; i < student->numOfCourses; i = i + 1) {
             if (student->grades[i]->grade < 50) {
-                fails++;
+                fails = fails + 1;
                 printf("\nFailed course! Total failures: %d", fails);
                 if (fails > 1) return false;
             }
@@ -152,7 +151,7 @@ bool student_promotable(const struct student* student) {
     } else {
         int sumGrade = 0;
         for (int i = 0; i < student->numOfCourses; i++) {
-            sumGrade += student->grades[i]->grade;
+            sumGrade = sumGrade + student->grades[i]->grade;
         }
         printf("\nCourse Average: %d", sumGrade/student->numOfCourses);
         if (sumGrade/student->numOfCourses < 60) return false;
