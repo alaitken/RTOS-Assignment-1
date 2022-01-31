@@ -120,18 +120,16 @@ double student_passed_average(const struct student* student) {
     int sumGrades = 0;
     int passedCourses = 0;
 
-    int numOfCourses = sizeof(student->grades)/sizeof(student->grades[0]);
-
-    for (int i = 0; i < numOfCourses; i++) {
+    for (int i = 0; i < student->numOfCourses; i++) {
         if ((student->is_graduate && student->grades[i]->grade >= 65) || 
             (!(student->is_graduate) && student->grades[i]->grade >= 50)) {
-            sumGrades += student->grades[i]->grade;
+            sumGrades = sumGrades + student->grades[i]->grade;
             passedCourses++;
         }
     }
 
     if (passedCourses == 0) return false;
-
+    printf("\nTotalled to: %f PassedCourses: %d", (sumGrades/passedCourses), passedCourses);
     printf("\nThe student passed average: %d", (sumGrades/passedCourses));
     return (sumGrades/passedCourses);
     return 1.0;
