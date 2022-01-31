@@ -152,10 +152,13 @@ bool student_promotable(const struct student* student) {
 
         for (int i = 0; i < student->numOfCourses; i++) {
 
-            if (student->grades[i]->grade < 50) {
+            if (student->grades[i]->grade < 65) {
                 fails++;
                 printf("\nFailed course! Total failures: %d", fails);
-                if (fails > 1) return false;
+                if (fails > 1) {
+                    printf("\nToo many failures. Not promotable.");
+                    return false;
+                }
             }
         }
     } else {
@@ -163,7 +166,7 @@ bool student_promotable(const struct student* student) {
         for (int i = 0; i < student->numOfCourses; i++) {
             sumGrade = sumGrade + student->grades[i]->grade;
         }
-        printf("\nCourse Average: %d NumOfCOurse: %d Avg: %d", sumGrade, student->numOfCourses, sumGrade/student->numOfCourses);
+        printf("\nCourse Average: %d NumOfCourse: %d Avg: %d", sumGrade, student->numOfCourses, sumGrade/student->numOfCourses);
         if (sumGrade/student->numOfCourses < 60) return false;
     }
 

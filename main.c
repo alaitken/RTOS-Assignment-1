@@ -92,12 +92,6 @@ void test_student() {
     student_take(amber, civ, 89);
     student_take(amber, ece, 50);
     student_take(amber, math, 49);
-    student_take(amber, phys, 5);
-    student_take(amber, mech, 6);
-    student_take(amber, onae, 7);
-    student_take(amber, proc, 8);
-    student_take(amber, chem, 9);
-    student_take(amber, engl, 10);
     printf("\nAmber grades recorded!");
 
     // printf("\nAmber's grade in %u is %f", amber->grades[0]->course->subject, amber->grades[0]->grade);
@@ -106,8 +100,9 @@ void test_student() {
 
     //printf("\nSize of grades array: %d numOfCourses: %d", numOfCourses, amber->numOfCourses);
 
-    printf("\nGrade is %d", student_grade(amber, chem));
-    printf("\npassed avergae is %f", student_passed_average(amber));
+    printf("\n Is amber promotable? %s", student_promotable(amber) ? "true" : "false");
+    //printf("\nGrade is %d", student_grade(amber, chem));
+    //printf("\npassed avergae is %f", student_passed_average(amber));
 
     // int x = 0;
     // while (x < amber->numOfCourses) {
