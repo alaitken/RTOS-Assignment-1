@@ -92,13 +92,12 @@ void test_student() {
     student_take(amber, civ, 89);
     student_take(amber, ece, 50);
     student_take(amber, math, 49);
-    // student_take(amber, phys, 5);
-    // student_take(amber, mech, 6);
-    // student_take(amber, onae, 7);
-    // student_take(amber, proc, 8);
-    // student_take(amber, chem, 9);
-    // student_take(amber, engl, 10);
-    // student_take(amber, engl, 11);
+    student_take(amber, phys, 5);
+    student_take(amber, mech, 6);
+    student_take(amber, onae, 7);
+    student_take(amber, proc, 8);
+    student_take(amber, chem, 9);
+    student_take(amber, engl, 10);
     printf("\nAmber grades recorded!");
 
     // printf("\nAmber's grade in %u is %f", amber->grades[0]->course->subject, amber->grades[0]->grade);
