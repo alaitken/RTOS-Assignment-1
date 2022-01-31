@@ -88,7 +88,7 @@ void student_take(struct student *student, struct course* course, uint8_t grade)
  */
 int student_grade(struct student* student, struct course* course) {
     int numOfCourses = sizeof(student->grades)/sizeof(student->grades[0]);
-    for (int i = 0; i < numOfCourses; i++) {
+    for (int i = 0; i < numOfCourses; i = i + 1) {
         if (course_code(student->grades[i]->course) == course_code(course)) 
             return student->grades[i]->grade;
     }
