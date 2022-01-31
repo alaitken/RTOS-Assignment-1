@@ -130,8 +130,7 @@ double student_passed_average(const struct student* student) {
     if (passedCourses == 0) return false;
     printf("\nTotalled to: %d PassedCourses: %d", (sumGrades/passedCourses), passedCourses);
     printf("\nThe student passed average: %d", (sumGrades/passedCourses));
-    return (sumGrades/passedCourses);
-    return 1.0;
+    return ((double)sumGrades/(double)passedCourses);
 }
 
 /**
