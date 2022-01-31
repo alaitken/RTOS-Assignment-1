@@ -25,8 +25,6 @@ struct course*	course_create(enum subject subject, uint16_t code) {
     c->subject = subject;
     c->code = code;
 
-    printf("Course created: %u", subject);
-
     return c;
 }
 
@@ -42,16 +40,12 @@ uint16_t	course_code(const struct course* course) {
 
 /** Increment a course's refcount. */
 void		course_hold(struct course* course) {
-    printf("\nHolding course! %u", course->subject);
     course->ref_count = course->ref_count + 1;
-    printf("\nRef count is now: %d", course->ref_count);
 }
 
 /** Decrement a course's refcount (optionally freeing it). */
 void		course_release(struct course* course) {
-    printf("\nTrying to release course.");
     if (course->ref_count > 0) {
-        printf("\nDecrementing ref count.");
         course->ref_count = course->ref_count - 1;
     }
 }

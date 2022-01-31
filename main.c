@@ -98,15 +98,16 @@ void test_student() {
     student_take(amber, proc, 8);
     student_take(amber, chem, 9);
     student_take(amber, engl, 10);
-    //printf("\nAmber grades recorded!");
+    student_take(amber, engl, 11);
+    printf("\nAmber grades recorded!");
 
-    printf("\nAmber's grade in %u is %f", amber->grades[0]->course->subject, amber->grades[0]->grade);
+    // printf("\nAmber's grade in %u is %f", amber->grades[0]->course->subject, amber->grades[0]->grade);
 
     //int numOfCourses = sizeof(amber->grades)/sizeof(amber->grades[0]);
 
     //printf("\nSize of grades array: %d numOfCourses: %d", numOfCourses, amber->numOfCourses);
 
-    printf("\nGrade is %d", student_grade(amber, engi));
+    printf("\nGrade is %d", student_grade(amber, engl));
 
     // int x = 0;
     // while (x < amber->numOfCourses) {

@@ -65,15 +65,25 @@ void student_free(struct student* student) {
 void student_take(struct student *student, struct course* course, uint8_t grade) {
     if (student->numOfCourses > MAX_COURSE_LOAD) return;
 
-    printf("\nStudent: %u is now taking %u", student->student_id.sid_serial, course->subject);
-    struct grade* g = malloc(sizeof(struct grade));
-
-    g->course = course;
-    g->grade = grade;
+    bool isRepeat = false;
     
-    student->grades[student->numOfCourses] = g;
-    student->numOfCourses = student->numOfCourses + 1;
-    printf("\nNum of courses: %d", student->numOfCourses);
+    for (int i = 0; i < student->numOfCourses; i++) {
+        printf("\ncurr Subject: %u, \nnew subject: %u", student->grades[i]->course->subject, course->subject);
+       if (student->grades[i]->course->subject == course->subject) {
+           printf("\nAlready taken subject! Updating!");
+           student->grades[i]->grade = grade;
+           isRepeat = true;
+       }
+    }
+
+    if (!isRepeat) {
+        struct grade* g = malloc(sizeof(struct grade));
+        g->course = course;
+        g->grade = grade;
+        student->grades[student->numOfCourses] = g;
+        student->numOfCourses = student->numOfCourses + 1;
+        printf("\nNum of courses: %d", student->numOfCourses);
+    }
 
     course_hold(course);
 }
@@ -88,9 +98,9 @@ void student_take(struct student *student, struct course* course, uint8_t grade)
  */
 int student_grade(struct student* student, struct course* course) {
     printf("\nChecking if student is taking course");
-    for (int i = 0; i < student->numOfCourses; ++i) {
+    for (int i = 0; i < student->numOfCourses; i++) {
         if (student->grades[i]->course->subject == course->subject) {
-            printf("Student is taking course!");
+            printf("\nStudent is taking course! Grade: %f", student->grades[i]->grade);
             return student->grades[i]->grade;
         }
     }
@@ -107,23 +117,24 @@ int student_grade(struct student* student, struct course* course) {
  */
 double student_passed_average(const struct student* student) {
 
-    int sumGrades = 0;
-    int passedCourses = 0;
+    // int sumGrades = 0;
+    // int passedCourses = 0;
 
-    int numOfCourses = sizeof(student->grades)/sizeof(student->grades[0]);
+    // int numOfCourses = sizeof(student->grades)/sizeof(student->grades[0]);
 
-    for (int i = 0; i < numOfCourses; i++) {
-        if ((student->is_graduate && student->grades[i]->grade >= 65) || 
-            (!(student->is_graduate) && student->grades[i]->grade >= 50)) {
-            sumGrades += student->grades[i]->grade;
-            passedCourses++;
-        }
-    }
+    // for (int i = 0; i < numOfCourses; i++) {
+    //     if ((student->is_graduate && student->grades[i]->grade >= 65) || 
+    //         (!(student->is_graduate) && student->grades[i]->grade >= 50)) {
+    //         sumGrades += student->grades[i]->grade;
+    //         passedCourses++;
+    //     }
+    // }
 
-    if (passedCourses == 0) return false;
+    // if (passedCourses == 0) return false;
 
-    printf("\nThe student passed average: %d", (sumGrades/passedCourses));
-    return (sumGrades/passedCourses);
+    // printf("\nThe student passed average: %d", (sumGrades/passedCourses));
+    // return (sumGrades/passedCourses);
+    return 1.0;
 }
 
 /**
@@ -139,26 +150,26 @@ double student_passed_average(const struct student* student) {
  */
 bool student_promotable(const struct student* student) {
 
-    if (student->is_graduate) {
-        printf("\nIs a graduate");
-        int fails = 0;
+    // if (student->is_graduate) {
+    //     printf("\nIs a graduate");
+    //     int fails = 0;
 
-        for (int i = 0; i < student->numOfCourses; i++) {
+    //     for (int i = 0; i < student->numOfCourses; i++) {
 
-            if (student->grades[i]->grade < 50) {
-                fails++;
-                printf("\nFailed course! Total failures: %d", fails);
-                if (fails > 1) return false;
-            }
-        }
-    } else {
-        int sumGrade = 0;
-        for (int i = 0; i < student->numOfCourses; i++) {
-            sumGrade += student->grades[i]->grade;
-        }
-        printf("\nCourse Average: %d", sumGrade/student->numOfCourses);
-        if (sumGrade/student->numOfCourses < 60) return false;
-    }
+    //         if (student->grades[i]->grade < 50) {
+    //             fails++;
+    //             printf("\nFailed course! Total failures: %d", fails);
+    //             if (fails > 1) return false;
+    //         }
+    //     }
+    // } else {
+    //     int sumGrade = 0;
+    //     for (int i = 0; i < student->numOfCourses; i++) {
+    //         sumGrade += student->grades[i]->grade;
+    //     }
+    //     printf("\nCourse Average: %d", sumGrade/student->numOfCourses);
+    //     if (sumGrade/student->numOfCourses < 60) return false;
+    // }
 
     return true;
 }
